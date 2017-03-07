@@ -96,7 +96,7 @@
 				TargetAttributes = {
 					57AD8EC41E2B521A001C8C3F = {
 						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = 4QX528523R;
+						DevelopmentTeam = 9E5HNNM285;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -259,7 +259,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 4QX528523R;
+				DEVELOPMENT_TEAM = 9E5HNNM285;
 				INFOPLIST_FILE = Gesture/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = me.cgua.Gesture;
@@ -272,7 +272,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 4QX528523R;
+				DEVELOPMENT_TEAM = 9E5HNNM285;
 				INFOPLIST_FILE = Gesture/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = me.cgua.Gesture;
