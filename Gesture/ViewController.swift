@@ -100,7 +100,19 @@ class ViewController: UIViewController {
         
         print(point)
         
-        another_uiview.center = point
+        let distance = distanceBetweenPoints(p1: big_circle_point, p2: point)
+        
+        print("距離為：\(distanceBetweenPoints(p1: big_circle_point, p2: point))")
+        
+        print(radius)
+        
+        if distance <= radius {
+            
+            another_uiview.center = point
+            
+        }
+        
+        //another_uiview.center = point
         
         if recognizer.state == UIGestureRecognizerState.ended {
             
@@ -109,8 +121,6 @@ class ViewController: UIViewController {
             print("資料傳輸為 0")
             
         }
-        
-        print("距離為：\(distanceBetweenPoints(p1: big_circle_point, p2: point))")
         
         print("角度為：\(angle(point: point))")
         
