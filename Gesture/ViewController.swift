@@ -18,9 +18,11 @@ class ViewController: UIViewController {
     
     var circle_uiview: UIView!
     
-    var big_circle_point: CGPoint!
+    var big_circle_point: CGPoint! //圓心座標
     
-    var radius:CGFloat = 0
+    var radius:CGFloat = 0 //半徑
+    
+    var last_data = "無"
     
     override func viewDidLoad() {
         
@@ -38,13 +40,13 @@ class ViewController: UIViewController {
         
         print("radius:\(radius)")
         
-        big_circle_point = CGPoint(x: 25, y: full_size.height / 2)
+        big_circle_point = CGPoint(x: 25 + radius, y: (full_size.height / 2) + radius)
         
         print(big_circle_point)
         
         self.view.addSubview(circle_uiview)
         // 控制器
-        another_uiview = UIView(frame: CGRect(x: full_size.width / 2 - 50, y: full_size.height * 0.75, width: 100, height: 100))
+        another_uiview = UIView(frame: CGRect(x: big_circle_point.x, y: big_circle_point.y, width: 100, height: 100))
         
         another_uiview.backgroundColor = UIColor.red
         
@@ -102,12 +104,59 @@ class ViewController: UIViewController {
         
         if recognizer.state == UIGestureRecognizerState.ended {
             
-            another_uiview.center = CGPoint(x: 300, y: 500)
+            another_uiview.center = big_circle_point
+            
+            print("資料傳輸為 0")
             
         }
         
+        print("距離為：\(distanceBetweenPoints(p1: big_circle_point, p2: point))")
+        
+        print("角度為：\(angle(point: point))")
+        
+        let p = angle(point: point)
+        
+        var write_date = ""
+        
+        switch  p {
+            
+        case 135...180, (-180)..<(-135) :
+            
+            write_date = "前進"
+            
+        case 46..<136 :
+            
+            write_date = "右"
+            
+        case (-45)..<46 :
+            
+            write_date = "後退"
+            
+        case (-135)...(-46) :
+            
+            write_date = "左"
+            
+        default :
+            
+            print("此角度不在範圍")
+            
+        }
+        
+        //print("-->\(write_date)")
+        
+        if last_data != write_date {
+            
+            print("現在才傳輸資料------------------------")
+            
+            print("-->\(write_date)")
+            
+        }
+        
+        last_data = write_date
+        
     }
     //計算距離
+    
     func distanceBetweenPoints(p1: CGPoint, p2: CGPoint) -> CGFloat {
         
         let dx = p1.x - p2.x
@@ -125,6 +174,42 @@ class ViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         
         print(distanceBetweenPoints(p1: p1, p2: p2))
+        
+    }
+    
+    //算角度
+    
+    func angleBetweenLine(lineABegin: CGPoint, lineAEnd: CGPoint, lineBBegin: CGPoint, lineBEnd: CGPoint) -> CGFloat {
+        
+        let a = lineAEnd.x - lineABegin.x
+        
+        let b = lineAEnd.y - lineABegin.y
+        
+        let atanA = atan2(a,b)
+    
+        let c = lineBEnd.x - lineBBegin.x
+        
+        let d = lineBEnd.y - lineBBegin.y
+        
+        let atanB = atan2(c,d)
+        
+        return (atanA - atanB) * 180 / CGFloat(M_PI)
+ 
+    }
+    
+    func angle(point: CGPoint) -> CGFloat {
+        
+        let originX = big_circle_point.x
+        
+        let originY = big_circle_point.y
+        
+        let a = point.x - originX
+        
+        let b = point.y - originY
+        
+        let atanA = atan2(a,b)
+        
+        return (atanA) * 180 / CGFloat(M_PI)
         
     }
     
