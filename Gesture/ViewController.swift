@@ -106,6 +106,8 @@ class ViewController: UIViewController {
         
         print(radius)
         
+        //當手指距離已超出範圍，就不在更新搖桿畫面
+        
         if distance <= radius {
             
             another_uiview.center = point
@@ -188,24 +190,6 @@ class ViewController: UIViewController {
     }
     
     //算角度
-    
-    func angleBetweenLine(lineABegin: CGPoint, lineAEnd: CGPoint, lineBBegin: CGPoint, lineBEnd: CGPoint) -> CGFloat {
-        
-        let a = lineAEnd.x - lineABegin.x
-        
-        let b = lineAEnd.y - lineABegin.y
-        
-        let atanA = atan2(a,b)
-    
-        let c = lineBEnd.x - lineBBegin.x
-        
-        let d = lineBEnd.y - lineBBegin.y
-        
-        let atanB = atan2(c,d)
-        
-        return (atanA - atanB) * 180 / CGFloat(M_PI)
- 
-    }
     
     func angle(point: CGPoint) -> CGFloat {
         
