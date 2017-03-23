@@ -14,23 +14,23 @@ class ViewController: UIViewController {
     
     var my_uiview: UIView!
     
-    var another_uiview: UIView!
+    var knob_view: UIView!
     
     var circle_uiview: UIView!
     
-    var big_circle_point: CGPoint! //圓心座標
+    var center_of_circle: CGPoint! //圓心座標
     
-    var radius:CGFloat = 0 //半徑
+    var radius: CGFloat = 0 //半徑
     
     var last_data = "無"
     
     override func viewDidLoad() {
         
         full_size = UIScreen.main.bounds.size
-        // 底
+        
         circle_uiview = UIView(frame: CGRect(x: 25, y: full_size.height / 2, width: full_size.width - 50, height: full_size.width - 50))
         
-        circle_uiview.backgroundColor = UIColor.brown
+        circle_uiview.backgroundColor = UIColor.darkGray
         
         circle_uiview.layer.cornerRadius = circle_uiview.frame.size.width/2
         
@@ -38,23 +38,23 @@ class ViewController: UIViewController {
         
         radius = (full_size.width - 50) / 2
         
-        print("radius:\(radius)")
+        print("半徑: \(radius)")
         
-        big_circle_point = CGPoint(x: 25 + radius, y: (full_size.height / 2) + radius)
+        center_of_circle = CGPoint(x: 25 + radius, y: (full_size.height / 2) + radius)
         
-        print(big_circle_point)
+        print("圓心： \(center_of_circle.x) ,\(center_of_circle.y)")
         
         self.view.addSubview(circle_uiview)
-        // 控制器
-        another_uiview = UIView(frame: CGRect(x: big_circle_point.x, y: big_circle_point.y, width: 100, height: 100))
+        // 方向搖桿
+        knob_view = UIView(frame: CGRect(x: center_of_circle.x, y: center_of_circle.y, width: 100, height: 100))
         
-        another_uiview.backgroundColor = UIColor.red
+        knob_view.backgroundColor = UIColor.red
         
-        another_uiview.layer.cornerRadius = another_uiview.frame.size.width/2
+        knob_view.layer.cornerRadius = knob_view.frame.size.width/2
         
         circle_uiview.clipsToBounds = true
         
-        self.view.addSubview(another_uiview)
+        self.view.addSubview(knob_view)
         
         let pan = UIPanGestureRecognizer(target: self, action: #selector(ViewController.pan))
         
@@ -62,7 +62,7 @@ class ViewController: UIViewController {
         
         pan.maximumNumberOfTouches = 1
         
-        another_uiview.addGestureRecognizer(pan)
+        knob_view.addGestureRecognizer(pan)
         
     }
 
@@ -96,41 +96,47 @@ class ViewController: UIViewController {
             
         }
         
-        let point = recognizer.location(in: self.view)
+        let current_position = recognizer.location(in: self.view)
         
-        print(point)
+        print(current_position)
         
-        let distance = distanceBetweenPoints(p1: big_circle_point, p2: point)
+        let distance = distanceBetweenPoints(p1: center_of_circle, p2: current_position)
         
-        print("距離為：\(distanceBetweenPoints(p1: big_circle_point, p2: point))")
-        
-        print(radius)
+        print("距離為：\(distance)")
         
         //當手指距離已超出範圍，就不在更新搖桿畫面
         
         if distance <= radius {
             
-            another_uiview.center = point
+            print("手指距離在範圍內")
+            
+            knob_view.center = current_position
+            
+        }
+        else {
+            
+            print("手指距離不在範圍內")
+            
+            
+            
             
         }
         
-        //another_uiview.center = point
-        
         if recognizer.state == UIGestureRecognizerState.ended {
             
-            another_uiview.center = big_circle_point
+            knob_view.center = center_of_circle
             
             print("資料傳輸為 0")
             
         }
         
-        print("角度為：\(angle(point: point))")
+        let _angle = angle(point: current_position)
         
-        let p = angle(point: point)
+        print("角度為：\(angle(point: current_position))")
         
         var write_date = ""
         
-        switch  p {
+        switch _angle {
             
         case 135...180, (-180)..<(-135) :
             
@@ -154,11 +160,9 @@ class ViewController: UIViewController {
             
         }
         
-        //print("-->\(write_date)")
-        
         if last_data != write_date {
             
-            print("現在才傳輸資料------------------------")
+            print("改變方向 ------------------------ ")
             
             print("-->\(write_date)")
             
@@ -193,9 +197,9 @@ class ViewController: UIViewController {
     
     func angle(point: CGPoint) -> CGFloat {
         
-        let originX = big_circle_point.x
+        let originX = center_of_circle.x
         
-        let originY = big_circle_point.y
+        let originY = center_of_circle.y
         
         let a = point.x - originX
         
